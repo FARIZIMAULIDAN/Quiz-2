@@ -1,0 +1,37 @@
+<%- include('../partials/_head.ejs') %>
+<%- include('../partials/_navbar.ejs') %>
+<%- include('../partials/_message.ejs') %>
+        <div class="row">
+            <div class="col">
+                <a href="/kapal/create" class="btn btn-sm btn-success">tambah</a>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nama kapal</th>
+                            <th scope="col">Nama Pemilik</th>
+                            <th scope="col">Nama DPI</th>
+                            <th scope="col">Nama Alat Tangkap</th>
+                            <th colspan="2" scope="col">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i = 0; i < data.length; i++){ %>
+                            <tr>
+                                <th scope="row"><%= (i+1)%></th>
+                                <td><%= data[i].nama_kapal %></td>
+                                <td><%= data[i].nama_pemilik %></td>
+                                <td><%= data[i].nama_dpi %></td>
+                                <td><%= data[i].nama_alat_tangkap %></td>
+                                <td>
+                                    <a href="/kapal/edit/<%= data[i].id_kapal %>" class="btn btn-sm btn-warning">edit</a>
+                                    <a href="/kapal/delete/<%= data[i].id_kapal %>" class="btn btn-sm btn-danger">delete</a>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <%- include('../partials/_foot.ejs') %>
