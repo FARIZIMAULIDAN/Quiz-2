@@ -14,7 +14,7 @@ class Model_users{
     }
     static async getId(id){
         return new Promise((resolve, reject) =>{
-            connection.query('select * from users order by id_user = ' + id , (err, rows) => {
+            connection.query('select * from users WHERE id_user = ' + id , (err, rows) => {
                 if(err){
                     reject(err);
                 }else{
@@ -27,7 +27,7 @@ class Model_users{
 
     static async Login(email){
         return new Promise((resolve, reject) =>{
-            connection.query('select *from users where email = ?', [email], function(err, result){
+            connection.query('select * from users where email = ?', [email], function(err, result){
                 if(err){
                     reject(err);
                 }else{

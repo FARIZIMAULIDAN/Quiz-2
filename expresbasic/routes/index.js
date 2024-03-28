@@ -29,33 +29,41 @@ router.post('/saveusers', async (req, res) => {
     res.redirect('/login');
 });
 
-router.post('/log', async (req, res) => {
-    let {
-        email,
-        passwd
-    } = req.body;
-    try {
-        let Data = await Model_users.Login(email);
-        if (Data.length > 0) {
-            let enkripsi = Data[0].passwd;
-            let cek = await bcrypt.compare(passwd, enkripsi);
-            if (cek) {
-                req.session.userId = Data[0].id_user;
-                req.flash('success', 'Berhasil Login');
-                res.redirect('/users');
-            } else {
-                req.flash('error', 'Email atau password salah');
-                res.redirect('/login');
-            }
-        } else {
-            req.flash('error', 'Account Not Found');
+router.post('/log', async (req, res) =>{
+    let {email, passwd } = req.body;
+    try{
+      let Data = await Model_users.Login(email);
+      if (Data.length > 0){
+        let enkripsi = Data[0].passwd;
+        let cek = await bcrypt.compare(passwd, enkripsi);
+        if (cek){
+          req.session.userId = Data[0].id_user;
+          if(Data[0].level_users == 1){
+            req.flash('success', 'berhasil login');
+          res.redirect('/superusers');
+          }else if(Data[0].level_users == 2){
+            req.flash('uccess', 'berhasil login');
+            res.redirect('/users');
+            // res.send(req.session.userId = Data[0])
+          } else{
             res.redirect('/login');
+          }
+        }else{
+          // res.send("error");
+          req.flash('success','berhasil login');
+          res.redirect('/login');
         }
-    } catch (err) {
+      }else{
+        // res.send("cok");
+        req.flash('success','akun tidak ditemukan');
         res.redirect('/login');
-        req.flash('error', 'Error pada fungsi');
+      }
+    }catch (err){
+      // res.send(err);
+      req.flash('/login');
+        res.redirect('error','error pada fungsi');
     }
-});
+  });
 
 router.get('/logout', function (req, res) {
     req.session.destroy(function (err) {
